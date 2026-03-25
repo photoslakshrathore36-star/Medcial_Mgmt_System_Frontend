@@ -151,11 +151,17 @@ export default function OrdersPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-slate-300 text-sm font-medium block mb-1.5">Deadline</label>
-                  <input type="date" value={form.deadline} onChange={e => setForm(p => ({ ...p, deadline: e.target.value }))}
+                  <label className="text-slate-300 text-sm font-medium block mb-1.5">Order Date</label>
+                  <input type="date" value={form.order_date} onChange={e => setForm(p => ({ ...p, order_date: e.target.value }))}
                     className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500"
                   />
                 </div>
+              </div>
+              <div>
+                <label className="text-slate-300 text-sm font-medium block mb-1.5">Deadline</label>
+                <input type="date" value={form.deadline} onChange={e => setForm(p => ({ ...p, deadline: e.target.value }))}
+                  className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500"
+                />
               </div>
               <div>
                 <label className="text-slate-300 text-sm font-medium block mb-1.5">Description</label>
