@@ -83,19 +83,49 @@ export default function FieldVisitsPage() {
     return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(2);
   };
 
+  // Get actual road distance and time from OSRM
+  const getRoadDistance = async (lat1, lng1, lat2, lng2) => {
+    try {
+      const response = await fetch(
+        `https://router.project-osrm.org/route/v1/driving/${lng1},${lat1};${lng2},${lat2}?overview=false`
+      );
+      const data = await response.json();
+      if (data.routes && data.routes[0]) {
+        const distanceKm = (data.routes[0].distance / 1000).toFixed(2);
+        const timeMinutes = Math.floor(data.routes[0].duration / 60);
+        return { distance: distanceKm, time: timeMinutes };
+      }
+    } catch (err) {
+      console.warn('OSRM distance calculation failed:', err.message);
+    }
+    // Fallback to haversine if OSRM fails
+    return { distance: calcDistanceKm(lat1, lng1, lat2, lng2), time: 0 };
+  };
+
   const handleArrived = async (plan = null) => {
     if (!hasActiveSession) return toast.error('Pehle session start karo!');
     setGettingLocation(true);
     const loc = await getLocation();
 
-    // calculate distance from last visit
+    // calculate distance from last visit using actual road routing
     let distKm = 0, travelMin = 0;
     if (visits.length > 0 && loc.lat) {
       const last = visits[0];
       if (last.arrival_lat) {
-        distKm = calcDistanceKm(parseFloat(last.arrival_lat), parseFloat(last.arrival_lng), loc.lat, loc.lng);
-        const lastDepTime = last.departure_time ? new Date(last.departure_time) : new Date(last.arrival_time);
-        travelMin = Math.floor((Date.now() - lastDepTime.getTime()) / 60000);
+        const roadData = await getRoadDistance(
+          parseFloat(last.arrival_lat), 
+          parseFloat(last.arrival_lng), 
+          loc.lat, 
+          loc.lng
+        );
+        distKm = roadData.distance;
+        // Use OSRM travel time if available, otherwise use elapsed time
+        if (roadData.time > 0) {
+          travelMin = roadData.time;
+        } else {
+          const lastDepTime = last.departure_time ? new Date(last.departure_time) : new Date(last.arrival_time);
+          travelMin = Math.floor((Date.now() - lastDepTime.getTime()) / 60000);
+        }
       }
     }
 

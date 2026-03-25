@@ -89,7 +89,26 @@ export default function FieldTrackingPage() {
     }).addTo(leafletMapRef.current);
   };
 
-  const plotOnMap = useCallback((detail) => {
+  // Fetch actual road route from OSRM (Open Source Routing Machine)
+  const fetchRoadRoute = async (latlngs) => {
+    if (!latlngs || latlngs.length < 2) return latlngs;
+    try {
+      // OSRM expects coordinates as [lng,lat] not [lat,lng]
+      const coords = latlngs.map(p => `${p[1]},${p[0]}`).join(';');
+      const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords}?geometries=geojson&overview=full`);
+      const data = await response.json();
+      if (data.routes && data.routes[0] && data.routes[0].geometry) {
+        // Convert GeoJSON coordinates [lng,lat] back to Leaflet format [lat,lng]
+        return data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+      }
+    } catch (err) {
+      console.warn('OSRM routing failed, using direct path:', err.message);
+    }
+    // Fallback to straight line if routing fails
+    return latlngs;
+  };
+
+  const plotOnMap = useCallback(async (detail) => {
     if (!window.L || !leafletMapRef.current) return;
     const L = window.L;
     const map = leafletMapRef.current;
@@ -101,10 +120,17 @@ export default function FieldTrackingPage() {
 
     const points = [];
 
-    // Route path from pings
+    // Route path from pings - fetch actual road routing
     if (detail.pings?.length > 0) {
       const latlngs = detail.pings.map(p => [parseFloat(p.latitude), parseFloat(p.longitude)]);
-      polylineRef.current = L.polyline(latlngs, { color: '#3b82f6', weight: 3, opacity: 0.7 }).addTo(map);
+      // Get actual road path instead of straight line
+      const roadPath = await fetchRoadRoute(latlngs);
+      polylineRef.current = L.polyline(roadPath, { 
+        color: '#3b82f6', 
+        weight: 4, 
+        opacity: 0.8,
+        className: 'route-polyline'
+      }).addTo(map);
       points.push(...latlngs);
     }
 
