@@ -100,11 +100,16 @@ export default function FieldVisitsPage() {
     return { distance:calcDistanceKm(lat1,lng1,lat2,lng2), time:0 };
   };
 
-  const handleTakePhoto = () => { if (cameraRef.current) cameraRef.current.click(); };
+  const handleTakePhoto = () => {
+    // Reset input so same file can be selected again after retake
+    if (cameraRef.current) { cameraRef.current.value = ''; cameraRef.current.click(); }
+  };
 
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    // Reset old URL immediately so partial state can't be submitted
+    setForm(p => ({ ...p, photo_url: '', photo_preview: '' }));
     const reader = new FileReader();
     reader.onload = async (ev) => {
       const base64 = ev.target.result;
@@ -114,7 +119,11 @@ export default function FieldVisitsPage() {
         const r = await api.post('/field/upload-photo', { image_base64: base64 });
         setForm(p => ({ ...p, photo_url: r.data.url }));
         toast.success('Photo upload ho gayi ✅');
-      } catch { toast.error('Photo upload failed'); }
+      } catch {
+        // Clear preview if upload failed — force retake
+        setForm(p => ({ ...p, photo_preview: '', photo_url: '' }));
+        toast.error('Photo upload failed — dobara try karo');
+      }
       setUploading(false);
     };
     reader.readAsDataURL(file);
@@ -144,7 +153,7 @@ export default function FieldVisitsPage() {
 
   const handleRecordArrival = async () => {
     if (!form.doctor_id) return toast.error('Doctor/Chemist select karo');
-    if (!form.photo_url && !form.photo_preview) return toast.error('Photo lena mandatory hai 📸');
+    if (!form.photo_url) return toast.error('Photo server pe upload honi chahiye 📸 — dobara try karo');
     if (form.outcome==='failed' && !form.failure_reason) return toast.error('Failed visit ka reason batao');
     try {
       const r = await api.post('/field/visits', {
