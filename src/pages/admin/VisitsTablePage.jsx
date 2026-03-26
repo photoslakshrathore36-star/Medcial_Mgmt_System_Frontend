@@ -189,7 +189,7 @@ export default function VisitsTablePage() {
                           </td>
                           <td className="px-3 py-2 text-center">
                             {v.photo_url
-                              ? <a href={`${process.env.REACT_APP_API_URL||'http://localhost:5000'}${v.photo_url}`}
+                              ? <a href={`${getPhotoUrl(v.photo_url)}`}
                                   target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()}
                                   className="text-blue-400 hover:text-blue-300 text-xs">📸</a>
                               : <span className="text-slate-600 text-xs">—</span>}
@@ -238,7 +238,7 @@ export default function VisitsTablePage() {
               {selectedVisit.photo_url && (
                 <div>
                   <div className="text-slate-400 mb-2">Photo</div>
-                  <img src={`${process.env.REACT_APP_API_URL||'http://localhost:5000'}${selectedVisit.photo_url}`}
+                  <img src={`${getPhotoUrl(selectedVisit.photo_url)}`}
                     alt="visit" className="w-full rounded-xl object-cover max-h-48"/>
                 </div>
               )}
@@ -249,3 +249,10 @@ export default function VisitsTablePage() {
     </div>
   );
 }
+
+function getPhotoUrl(url) {
+  if (!url) return '';
+  if (url.startsWith('http')) return url; // Cloudinary ya koi bhi absolute URL
+  return (process.env.REACT_APP_API_URL || 'http://localhost:5000') + url; // local dev
+}
+

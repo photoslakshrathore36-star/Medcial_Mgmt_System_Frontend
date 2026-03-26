@@ -286,7 +286,7 @@ export default function FieldVisitsPage() {
                           {OUTCOME_OPTIONS.find(o=>o.value===v.outcome)?.label||v.outcome}
                         </span>
                         {v.photo_url && (
-                          <a href={`${process.env.REACT_APP_API_URL||'http://localhost:5000'}${v.photo_url}`}
+                          <a href={`${getPhotoUrl(v.photo_url)}`}
                             target="_blank" rel="noreferrer"
                             className="text-xs text-slate-400 hover:text-blue-400">📸</a>
                         )}
@@ -448,3 +448,10 @@ function getOutcomeColor(outcome) {
   const map={interested:'#22c55e',not_interested:'#ef4444',follow_up:'#f59e0b',sample_given:'#3b82f6',order_placed:'#8b5cf6',not_available:'#6b7280',failed:'#dc2626'};
   return map[outcome]||'#6b7280';
 }
+
+function getPhotoUrl(url) {
+  if (!url) return '';
+  if (url.startsWith('http')) return url; // Cloudinary ya koi bhi absolute URL
+  return (process.env.REACT_APP_API_URL || 'http://localhost:5000') + url; // local dev
+}
+

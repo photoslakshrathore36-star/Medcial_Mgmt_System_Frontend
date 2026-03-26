@@ -130,7 +130,7 @@ export default function DoctorHistoryPage() {
                         </span>
                       )}
                       {v.photo_url && (
-                        <a href={`${process.env.REACT_APP_API_URL||'http://localhost:5000'}${v.photo_url}`}
+                        <a href={`${getPhotoUrl(v.photo_url)}`}
                           target="_blank" rel="noreferrer"
                           className="text-xs text-blue-400 hover:text-blue-300">📸 Photo</a>
                       )}
@@ -149,3 +149,10 @@ export default function DoctorHistoryPage() {
     </div>
   );
 }
+
+function getPhotoUrl(url) {
+  if (!url) return '';
+  if (url.startsWith('http')) return url; // Cloudinary ya koi bhi absolute URL
+  return (process.env.REACT_APP_API_URL || 'http://localhost:5000') + url; // local dev
+}
+
