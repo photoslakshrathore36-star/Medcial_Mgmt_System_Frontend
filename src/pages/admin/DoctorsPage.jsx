@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
 export default function DoctorsPage() {
+  const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,6 +95,7 @@ export default function DoctorsPage() {
               <div className="flex items-start justify-between mb-3">
                 <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center text-xl">👨‍⚕️</div>
                 <div className="flex gap-1">
+                  <button onClick={() => navigate(`/admin/doctors/${doc.id}/history`)} className="p-1.5 text-slate-400 hover:text-green-400 hover:bg-slate-700 rounded-lg transition" title="Visit History">📋</button>
                   <button onClick={() => openEdit(doc)} className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-slate-700 rounded-lg transition">✏️</button>
                   <button onClick={() => handleDelete(doc.id)} className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-700 rounded-lg transition">🗑️</button>
                 </div>

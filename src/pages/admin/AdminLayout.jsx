@@ -13,8 +13,9 @@ const navItems = [
   { path: '/admin/areas', label: 'Areas', icon: '🗺️' },
   { path: '/admin/visit-plans', label: 'Visit Plans', icon: '📋' },
   { path: '/admin/field-tracking', label: 'Live Tracking', icon: '📍' },
+  { path: '/admin/visits', label: 'Visits Table', icon: '🗒️' },
   { divider: true, label: 'More' },
-  { path: '/admin/reports', label: 'Reports', icon: '📈' },
+  { path: '/admin/reports', label: 'Reports & Alerts', icon: '📈' },
   { path: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
 

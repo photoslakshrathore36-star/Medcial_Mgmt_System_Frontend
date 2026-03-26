@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 export default function ReportsPage() {
   const [fieldReport, setFieldReport] = useState(null);
   const [productionReport, setProductionReport] = useState(null);
+  const [alertsData, setAlertsData] = useState(null);
   const [workers, setWorkers] = useState([]);
   const [filterWorker, setFilterWorker] = useState('');
   const [dateFrom, setDateFrom] = useState(new Date(Date.now() - 30*24*3600000).toISOString().split('T')[0]);
@@ -15,7 +16,18 @@ export default function ReportsPage() {
   useEffect(() => {
     api.get('/workers', { params: { role: 'field_worker' } }).then(r => setWorkers(r.data)).catch(() => {});
     loadReports();
+    loadAlerts();
   }, []);
+
+  const loadAlerts = async () => {
+    try {
+      const [nm, fg] = await Promise.all([
+        api.get('/alerts/no-movement'),
+        api.get('/alerts/fake-gps'),
+      ]);
+      setAlertsData({ noMovement: nm.data, fakeGps: fg.data });
+    } catch {}
+  };
 
   const loadReports = async () => {
     setLoading(true);
@@ -29,18 +41,23 @@ export default function ReportsPage() {
     setLoading(false);
   };
 
-  const OUTCOME_COLORS = { interested: '#22c55e', not_interested: '#ef4444', follow_up: '#f59e0b', sample_given: '#3b82f6', order_placed: '#8b5cf6', not_available: '#6b7280' };
+  const OUTCOME_COLORS = { interested: '#22c55e', not_interested: '#ef4444', follow_up: '#f59e0b', sample_given: '#3b82f6', order_placed: '#8b5cf6', not_available: '#6b7280', failed: '#dc2626' };
+  const alertCount = (alertsData?.noMovement?.alerts?.length || 0) + (alertsData?.fakeGps?.suspicious_visits?.length || 0);
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-white mb-6">Reports</h1>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-5">
-        {['field', 'production'].map(t => (
-          <button key={t} onClick={() => setTab(t)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition capitalize ${tab === t ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700 hover:border-slate-500'}`}>
-            {t === 'field' ? '🏃 Field Report' : '🏭 Production Report'}
+      <div className="flex gap-2 mb-5 flex-wrap">
+        {[
+          {k:'field',      l:'🏃 Field Report'},
+          {k:'production', l:'🏭 Production Report'},
+          {k:'alerts',     l:`🚨 Alerts${alertCount>0?` (${alertCount})`:''}`,},
+        ].map(t => (
+          <button key={t.k} onClick={() => setTab(t.k)}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition ${tab === t.k ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700 hover:border-slate-500'}${t.k==='alerts'&&alertCount>0?' border-red-700/50':''}`}>
+            {t.l}
           </button>
         ))}
       </div>
@@ -170,6 +187,87 @@ export default function ReportsPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ALERTS TAB */}
+      {tab === 'alerts' && (
+        <div className="space-y-5">
+          <div className="flex justify-end">
+            <button onClick={loadAlerts}
+              className="bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-2 rounded-lg text-sm transition">
+              🔄 Refresh
+            </button>
+          </div>
+
+          {/* No Movement Alerts */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              📍 No Movement Alert
+              <span className="text-xs bg-yellow-900/40 text-yellow-300 px-2 py-0.5 rounded-full">
+                {alertsData?.noMovement?.threshold_minutes || 30} min se zyada idle
+              </span>
+            </h3>
+            {!alertsData ? (
+              <div className="text-slate-400 text-sm">Loading...</div>
+            ) : alertsData.noMovement.alerts.length === 0 ? (
+              <div className="text-green-400 text-sm">✅ Koi alert nahi — sabhi staff active hain</div>
+            ) : (
+              <div className="space-y-2">
+                {alertsData.noMovement.alerts.map(a => (
+                  <div key={a.session_id} className="bg-yellow-900/20 border border-yellow-700/30 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                      <div className="text-white font-medium">{a.worker_name}</div>
+                      <div className="text-slate-400 text-xs">
+                        {a.last_ping
+                          ? `Last ping: ${new Date(a.last_ping).toLocaleTimeString('en-IN')} (${a.minutes_since_ping} min ago)`
+                          : 'Koi ping nahi mili'}
+                      </div>
+                    </div>
+                    <span className="text-yellow-400 text-sm font-bold">⚠️</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Fake GPS Alerts */}
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              🛰 Suspicious GPS / Fake Location
+              <span className="text-xs bg-red-900/40 text-red-300 px-2 py-0.5 rounded-full">Last 7 days</span>
+            </h3>
+            {!alertsData ? (
+              <div className="text-slate-400 text-sm">Loading...</div>
+            ) : alertsData.fakeGps.suspicious_visits.length === 0 ? (
+              <div className="text-green-400 text-sm">✅ Koi suspicious visit nahi mili</div>
+            ) : (
+              <div className="space-y-2">
+                {alertsData.fakeGps.suspicious_visits.map(v => (
+                  <div key={v.id} className="bg-red-900/20 border border-red-700/30 rounded-xl p-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-white font-medium">{v.worker_name}</div>
+                        <div className="text-slate-300 text-sm">{v.doctor_name} · {v.area_name}</div>
+                        <div className="text-slate-400 text-xs mt-1">
+                          {new Date(v.arrival_time).toLocaleString('en-IN')}
+                        </div>
+                        {v.arrival_lat && (
+                          <div className="text-slate-400 text-xs">
+                            GPS: {parseFloat(v.arrival_lat).toFixed(5)}, {parseFloat(v.arrival_lng).toFixed(5)}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="text-red-400 font-bold text-sm">{v.distance_from_doctor_m}m off</div>
+                        <div className="text-slate-400 text-xs">from doctor</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
