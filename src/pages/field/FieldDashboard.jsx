@@ -17,7 +17,7 @@ export default function FieldDashboard() {
       setLoading(true);
       try {
         const [p, v] = await Promise.all([
-          api.get('/visit-plans', { params: { date: today, status: 'planned' } }),
+          api.get('/visit-plans', { params: { status: 'planned' } }),
           api.get('/field/visits', { params: { date_from: today, date_to: today } }),
         ]);
         setTodayPlans(p.data);

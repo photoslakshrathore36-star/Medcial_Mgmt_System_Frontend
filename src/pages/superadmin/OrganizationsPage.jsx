@@ -86,6 +86,16 @@ export default function OrganizationsPage() {
     } catch { toast.error('Failed'); }
   };
 
+  const handleDeleteOrg = async (org) => {
+    if (!window.confirm(`"${org.name}" aur uska SAARAA data permanently delete ho jayega!\n\nKya aap sure hain?`)) return;
+    if (!window.confirm(`DOBAARA confirm karein — "${org.name}" delete karna hai?`)) return;
+    try {
+      await api.delete(`/super/organizations/${org.id}`);
+      toast.success('Organization delete ho gayi ✅');
+      loadOrgs();
+    } catch (err) { toast.error(err.response?.data?.message || 'Delete failed'); }
+  };
+
   const handleSavePermissions = async () => {
     setSaving(true);
     try {
@@ -179,6 +189,10 @@ export default function OrganizationsPage() {
                       <button onClick={() => handleToggleLicense(org)}
                         className={`text-xs px-3 py-1.5 rounded-lg transition ${org.is_active ? 'bg-red-900/40 hover:bg-red-800/60 text-red-400' : 'bg-green-900/40 hover:bg-green-800/60 text-green-400'}`}>
                         {org.is_active ? '🔒 Deactivate' : '🔓 Activate'}
+                      </button>
+                      <button onClick={() => handleDeleteOrg(org)}
+                        className="text-xs px-3 py-1.5 rounded-lg transition bg-red-900/20 hover:bg-red-900/60 text-red-500 hover:text-red-300">
+                        🗑️ Delete
                       </button>
                     </div>
                   </div>

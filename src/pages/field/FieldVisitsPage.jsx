@@ -57,7 +57,7 @@ export default function FieldVisitsPage() {
     try {
       const [v, p, d, pr] = await Promise.all([
         api.get('/field/visits', { params: { date_from: today, date_to: today } }),
-        api.get('/visit-plans', { params: { date: today, status: 'planned' } }),
+        api.get('/visit-plans', { params: { status: 'planned' } }),
         api.get('/doctors'),
         api.get('/samples'),
       ]);
