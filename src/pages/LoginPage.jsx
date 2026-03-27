@@ -17,7 +17,8 @@ export default function LoginPage() {
       const res = await api.post('/auth/login', form);
       login(res.data.user, res.data.token);
       const role = res.data.user.role;
-      if (role === 'admin') navigate('/admin');
+      if (role === 'super_admin') navigate('/superadmin');
+      else if (role === 'admin') navigate('/admin');
       else if (role === 'worker') navigate('/worker');
       else navigate('/field');
     } catch (err) {
