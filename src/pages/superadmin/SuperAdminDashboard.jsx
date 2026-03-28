@@ -51,7 +51,7 @@ export default function SuperAdminDashboard() {
       {loading
         ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" /></div>
         : orgs.length === 0
-          ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-400">Koi organization nahi hai — pehle ek banao</div>
+          ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-400">No organizations found — create one to get started</div>
           : <div className="space-y-3">
               {orgs.map(org => (
                 <div key={org.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-center justify-between gap-4">

@@ -47,7 +47,7 @@ export default function OrderDetailPage() {
   };
 
   const deleteItem = async (itemId) => {
-    if (!window.confirm('Item delete karna hai?')) return;
+    if (!window.confirm('Delete this item?')) return;
     await api.delete('/orders/' + id + '/items/' + itemId);
     toast.success('Deleted'); load();
   };
@@ -153,7 +153,7 @@ export default function OrderDetailPage() {
           </button>
         </div>
         <div className="space-y-2">
-          {order.items?.length === 0 && <p className="text-slate-400 text-sm text-center py-6 bg-slate-800 border border-slate-700 rounded-xl">Koi item nahi. Pehle items add karo.</p>}
+          {order.items?.length === 0 && <p className="text-slate-400 text-sm text-center py-6 bg-slate-800 border border-slate-700 rounded-xl">No items added yet.</p>}
           {order.items?.map(item => (
             <div key={item.id} className="bg-slate-800 border border-slate-700 rounded-xl p-3 flex items-center gap-3">
               <div className="flex-1 min-w-0">
@@ -178,7 +178,7 @@ export default function OrderDetailPage() {
           </button>
         </div>
         <div className="space-y-2">
-          {order.tasks?.length === 0 && <p className="text-slate-400 text-sm text-center py-6 bg-slate-800 border border-slate-700 rounded-xl">Koi task assign nahi hua</p>}
+          {order.tasks?.length === 0 && <p className="text-slate-400 text-sm text-center py-6 bg-slate-800 border border-slate-700 rounded-xl">No tasks assigned</p>}
           {order.tasks?.map(t => (
             <div key={t.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
@@ -320,7 +320,7 @@ export default function OrderDetailPage() {
               <div>
                 <label className="text-slate-300 text-sm font-medium block mb-1.5">Notes for Worker</label>
                 <textarea rows={2} value={taskForm.admin_notes} onChange={e => setTaskForm(p => ({ ...p, admin_notes: e.target.value }))}
-                  placeholder="Worker ko kya karna hai, special instructions..."
+                  placeholder="Task instructions, special notes..."
                   className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500 resize-none" />
               </div>
             </div>

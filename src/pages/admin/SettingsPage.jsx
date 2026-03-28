@@ -71,13 +71,13 @@ export function SettingsPage() {
               <label className="text-slate-300 text-sm font-medium block mb-1.5">Geo-fence Radius (meters)</label>
               <input type="number" value={settings['geofence_radius_m'] || '500'} onChange={e => setSettings(p => ({ ...p, geofence_radius_m: e.target.value }))}
                 className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500" />
-              <p className="text-slate-500 text-xs mt-1">Visit allowed radius — doctor ke itne meter andar GPS hona chahiye (default: 500m)</p>
+              <p className="text-slate-500 text-xs mt-1">Allowed GPS radius — worker must be within this distance from doctor (default: 500m)</p>
             </div>
             <div>
               <label className="text-slate-300 text-sm font-medium block mb-1.5">No Movement Alert (minutes)</label>
               <input type="number" value={settings['no_movement_alert_minutes'] || '30'} onChange={e => setSettings(p => ({ ...p, no_movement_alert_minutes: e.target.value }))}
                 className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500" />
-              <p className="text-slate-500 text-xs mt-1">Kitne minute GPS ping nahi aayi toh alert trigger ho (default: 30 min)</p>
+              <p className="text-slate-500 text-xs mt-1">Alert if no GPS ping received for this many minutes (default: 30 min)</p>
             </div>
             <button onClick={saveSettings} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">Save Field Settings</button>
           </div>

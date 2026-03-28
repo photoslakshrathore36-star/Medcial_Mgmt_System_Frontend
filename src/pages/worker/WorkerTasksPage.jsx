@@ -41,7 +41,7 @@ export default function WorkerTasksPage() {
   const handleClockIn = async (taskId) => {
     try {
       await api.post(`/tasks/${taskId}/clock-in`);
-      toast.success('Clock In! Kaam shuru karo 💪');
+      toast.success('Clocked in! Let's get to work 💪');
       loadTasks();
     } catch (err) { toast.error(err.response?.data?.message || 'Error'); }
   };
@@ -49,7 +49,7 @@ export default function WorkerTasksPage() {
   const handleClockOut = async (taskId) => {
     try {
       await api.post(`/tasks/${taskId}/clock-out`);
-      toast.success('Clock Out! Aaram karo 😊');
+      toast.success('Clocked out! Good work 😊');
       loadTasks();
     } catch (err) { toast.error(err.response?.data?.message || 'Error'); }
   };
@@ -80,8 +80,8 @@ export default function WorkerTasksPage() {
       {tasks.length === 0 && (
         <div className="text-center py-12">
           <div className="text-4xl mb-2">🎉</div>
-          <div className="text-white font-medium">Koi pending task nahi hai!</div>
-          <div className="text-slate-400 text-sm mt-1">Sab kaam ho gaya</div>
+          <div className="text-white font-medium">No pending tasks!</div>
+          <div className="text-slate-400 text-sm mt-1">All tasks are complete</div>
         </div>
       )}
 
@@ -148,7 +148,7 @@ export default function WorkerTasksPage() {
 
               {isClocked && (
                 <div className="mt-2 text-center text-green-400 text-xs animate-pulse">
-                  ⏱ Kaam chal raha hai...
+                  ⏱ Work in progress...
                 </div>
               )}
             </div>

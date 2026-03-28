@@ -73,13 +73,13 @@ export default function FieldSessionPage() {
       toast.success('Session shuru ho gayi! 🚀');
       setTimeout(() => loadSessionDetail(), 500);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Location access do phir try karo');
+      toast.error(err.response?.data?.message || 'Please allow location access and try again');
     }
     setGettingLocation(false);
   };
 
   const handleEndSession = async () => {
-    if (!window.confirm('Session end karna hai? Saare GPS tracks save ho jayenge.')) return;
+    if (!window.confirm('End session? All GPS tracks will be saved.')) return;
     setGettingLocation(true);
     try {
       const loc = await getCurrentLocation().catch(() => ({}));
@@ -100,19 +100,19 @@ export default function FieldSessionPage() {
     return (
       <div className="p-4 max-w-lg mx-auto">
         <h1 className="text-xl font-bold text-white mb-2">Field Session</h1>
-        <p className="text-slate-400 text-sm mb-6">Office se nikalne se pehle session start karo</p>
+        <p className="text-slate-400 text-sm mb-6">Start a session before heading out</p>
 
         <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center">
           <div className="text-6xl mb-4">📍</div>
           <h2 className="text-white font-semibold text-lg mb-2">Session Start Karo</h2>
-          <p className="text-slate-400 text-sm mb-6">GPS tracking automatically start ho jayegi aur admin live dekh sakenge</p>
+          <p className="text-slate-400 text-sm mb-6">GPS tracking will start automatically and admin can view your live location</p>
           <button
             onClick={handleStartSession}
             disabled={gettingLocation}
             className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 transition"
           >
             {gettingLocation ? (
-              <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Location le raha hai...</>
+              <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Getting location...</>
             ) : (
               <><span className="text-2xl">🚀</span> Session Start</>
             )}
@@ -120,12 +120,12 @@ export default function FieldSessionPage() {
         </div>
 
         <div className="mt-4 bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
-          <h3 className="text-slate-300 text-sm font-medium mb-2">📋 Session kya karta hai:</h3>
+          <h3 className="text-slate-300 text-sm font-medium mb-2">📋 What a session does:</h3>
           <ul className="space-y-1.5 text-slate-400 text-sm">
-            <li>✅ GPS tracking shuru ho jaati hai</li>
-            <li>✅ Admin live location dekh sakta hai</li>
-            <li>✅ Har doctor visit automatically record hoti hai</li>
-            <li>✅ Travel time aur distance automatically calculate hoti hai</li>
+            <li>✅ GPS tracking begins</li>
+            <li>✅ Admin can see your live location</li>
+            <li>✅ Every doctor visit is automatically recorded</li>
+            <li>✅ Travel time and distance are automatically calculated</li>
           </ul>
         </div>
       </div>
@@ -155,7 +155,7 @@ export default function FieldSessionPage() {
         <h2 className="text-white font-semibold mb-3">Is Session ke Visits ({visits.length})</h2>
         {visits.length === 0 ? (
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center text-slate-400 text-sm">
-            Abhi tak koi visit nahi hui. Visit page pe jao.
+            No visits yet. Go to the Visits page.
           </div>
         ) : (
           <div className="space-y-2">
@@ -188,12 +188,12 @@ export default function FieldSessionPage() {
         className="w-full bg-red-600/20 hover:bg-red-600/40 border border-red-700/50 disabled:opacity-50 text-red-400 py-4 rounded-xl font-semibold flex items-center justify-center gap-3 transition"
       >
         {gettingLocation ? (
-          <><div className="w-5 h-5 border-2 border-red-400 border-t-transparent rounded-full animate-spin" /> Wait karo...</>
+          <><div className="w-5 h-5 border-2 border-red-400 border-t-transparent rounded-full animate-spin" /> Please wait...</>
         ) : (
           <><span className="text-2xl">🏁</span> Session End Karo</>
         )}
       </button>
-      <p className="text-slate-500 text-xs text-center mt-2">Wapas office pahuncho tab session end karo</p>
+      <p className="text-slate-500 text-xs text-center mt-2">End session when you return to the office</p>
     </div>
   );
 }

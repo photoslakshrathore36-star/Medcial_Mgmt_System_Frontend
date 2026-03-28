@@ -55,7 +55,7 @@ export default function DoctorsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Is doctor ko deactivate karna hai?')) return;
+    if (!window.confirm('Deactivate this doctor?')) return;
     await api.delete(`/doctors/${id}`);
     toast.success('Deactivated');
     load();

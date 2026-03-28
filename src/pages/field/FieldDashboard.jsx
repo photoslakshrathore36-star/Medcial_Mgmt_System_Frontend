@@ -48,7 +48,7 @@ export default function FieldDashboard() {
               )}
             </div>
             <p className="text-slate-400 text-sm">
-              {hasActiveSession ? 'GPS tracking chal raha hai' : 'Field pe jaane ke liye session start karo'}
+              {hasActiveSession ? 'GPS tracking is active' : 'Start a session when you head to the field'}
             </p>
           </div>
           <button onClick={() => navigate('/field/session')}
@@ -77,7 +77,7 @@ export default function FieldDashboard() {
           <div className="flex justify-center py-4"><div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>
         ) : todayPlans.length === 0 ? (
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-center">
-            <p className="text-slate-400 text-sm">Aaj ke liye koi plan nahi hai</p>
+            <p className="text-slate-400 text-sm">No plans for today</p>
           </div>
         ) : (
           <div className="space-y-2">

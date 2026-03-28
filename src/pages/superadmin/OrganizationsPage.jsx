@@ -87,8 +87,8 @@ export default function OrganizationsPage() {
   };
 
   const handleDeleteOrg = async (org) => {
-    if (!window.confirm(`"${org.name}" aur uska SAARAA data permanently delete ho jayega!\n\nKya aap sure hain?`)) return;
-    if (!window.confirm(`DOBAARA confirm karein — "${org.name}" delete karna hai?`)) return;
+    if (!window.confirm(`"${org.name}" and ALL its data will be permanently deleted!\n\nAre you sure?`)) return;
+    if (!window.confirm(`Please confirm again — "${org.name}" delete?`)) return;
     try {
       await api.delete(`/super/organizations/${org.id}`);
       toast.success('Organization delete ho gayi ✅');
@@ -107,9 +107,9 @@ export default function OrganizationsPage() {
   };
 
   const handleSaveOrg = async () => {
-    if (!form.name || !form.slug) return toast.error('Name aur Slug required hai');
+    if (!form.name || !form.slug) return toast.error('Name and Slug are required');
     if (!editOrg && (!form.admin_name || !form.admin_username || !form.admin_password)) {
-      return toast.error('Admin details required hain new org ke liye');
+      return toast.error('Admin details are required for a new organization');
     }
     setSaving(true);
     try {
@@ -150,7 +150,7 @@ export default function OrganizationsPage() {
       {loading
         ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" /></div>
         : orgs.length === 0
-          ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-10 text-center text-slate-400">Koi organization nahi hai</div>
+          ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-10 text-center text-slate-400">No organizations found</div>
           : <div className="space-y-3">
               {orgs.map(org => (
                 <div key={org.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4">

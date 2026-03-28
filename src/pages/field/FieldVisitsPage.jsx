@@ -122,7 +122,7 @@ export default function FieldVisitsPage() {
       } catch {
         // Clear preview if upload failed — force retake
         setForm(p => ({ ...p, photo_preview: '', photo_url: '' }));
-        toast.error('Photo upload failed — dobara try karo');
+        toast.error('Photo upload failed — please try again');
       }
       setUploading(false);
     };
@@ -130,7 +130,7 @@ export default function FieldVisitsPage() {
   };
 
   const handleArrived = async (plan=null) => {
-    if (!hasActiveSession) return toast.error('Pehle session start karo!');
+    if (!hasActiveSession) return toast.error('Please start a session first!');
     setGettingLocation(true);
     const loc = await getLocation();
     let distKm=0, travelMin=0;
@@ -152,8 +152,8 @@ export default function FieldVisitsPage() {
   };
 
   const handleRecordArrival = async () => {
-    if (!form.doctor_id) return toast.error('Doctor/Chemist select karo');
-    if (!form.photo_url) return toast.error('Photo server pe upload honi chahiye 📸 — dobara try karo');
+    if (!form.doctor_id) return toast.error('Please select a Doctor/Chemist');
+    if (!form.photo_url) return toast.error('Photo must be uploaded to server 📸 — please try again');
     if (form.outcome==='failed' && !form.failure_reason) return toast.error('Failed visit ka reason batao');
     try {
       const r = await api.post('/field/visits', {
@@ -207,7 +207,7 @@ export default function FieldVisitsPage() {
         <div className="bg-blue-900/30 border border-blue-700/50 rounded-2xl p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <div className="text-blue-400 font-semibold text-sm">Abhi yahan hain:</div>
+              <div className="text-blue-400 font-semibold text-sm">Currently here:</div>
               <div className="text-white font-bold">{activeVisit.doctor_name}</div>
               <div className="text-slate-400 text-xs">{activeVisit.clinic_name}</div>
             </div>
@@ -227,7 +227,7 @@ export default function FieldVisitsPage() {
         <div className="mb-5">
           <h2 className="text-slate-300 font-medium mb-3 text-sm">Aaj ke Plans</h2>
           {plans.length===0 && (
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-3 text-center text-slate-400 text-sm mb-3">Aaj koi plan nahi hai</div>
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-3 text-center text-slate-400 text-sm mb-3">No plans for today</div>
           )}
           {plans.map(p => (
             <div key={p.id} className="bg-slate-800 border border-slate-700 rounded-xl p-3 mb-2 flex items-center justify-between">
@@ -246,7 +246,7 @@ export default function FieldVisitsPage() {
             {gettingLocation?<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"/>:'➕'}
             Naya / Unplanned Visit Record Karo
           </button>
-          {!hasActiveSession && <p className="text-yellow-400 text-xs text-center mt-2">⚠️ Visit record karne ke liye pehle session start karo</p>}
+          {!hasActiveSession && <p className="text-yellow-400 text-xs text-center mt-2">⚠️ Start a session to record visits</p>}
         </div>
       )}
 
@@ -255,7 +255,7 @@ export default function FieldVisitsPage() {
         {loading
           ? <div className="flex justify-center py-4"><div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"/></div>
           : visits.length===0
-            ? <div className="text-slate-400 text-sm text-center py-4">Abhi tak koi visit nahi</div>
+            ? <div className="text-slate-400 text-sm text-center py-4">No visits yet</div>
             : <div className="space-y-2">
                 {visits.map((v,i) => (
                   <div key={v.id} className="bg-slate-800 border border-slate-700 rounded-xl p-3">
@@ -347,7 +347,7 @@ export default function FieldVisitsPage() {
                     {form.distance_from_prev_km>0 && ` · ${form.distance_from_prev_km} km from last`}
                   </div>
                 : <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-xl p-3 text-xs text-yellow-400">
-                    ⚠️ GPS nahi mili. Geo-verification nahi hogi.
+                    ⚠️ GPS not available. Geo-verification will be skipped.
                   </div>
               }
 
@@ -413,7 +413,7 @@ export default function FieldVisitsPage() {
                 <div>
                   <label className="text-slate-300 text-sm font-medium block mb-1.5">Failed Visit ka Reason <span className="text-red-400">*</span></label>
                   <textarea rows={2} value={form.failure_reason} onChange={e=>setForm(p=>({...p,failure_reason:e.target.value}))}
-                    placeholder="Doctor nahi mile / Clinic band thi / Appointment nahi mila..."
+                    placeholder="Doctor unavailable / Clinic closed / No appointment..."
                     className="w-full bg-slate-700 border border-red-600/50 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-red-500 resize-none"/>
                 </div>
               )}

@@ -94,7 +94,7 @@ export default function ReportsPage() {
               {/* Worker-wise */}
               <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
                 <h3 className="text-white font-semibold mb-4">Worker-wise Performance</h3>
-                {fieldReport.visits_by_worker.length === 0 ? <p className="text-slate-400 text-sm">Koi data nahi</p> : (
+                {fieldReport.visits_by_worker.length === 0 ? <p className="text-slate-400 text-sm">No data available</p> : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead><tr className="text-slate-400 text-xs">
@@ -212,7 +212,7 @@ export default function ReportsPage() {
             {!alertsData ? (
               <div className="text-slate-400 text-sm">Loading...</div>
             ) : alertsData.noMovement.alerts.length === 0 ? (
-              <div className="text-green-400 text-sm">✅ Koi alert nahi — sabhi staff active hain</div>
+              <div className="text-green-400 text-sm">✅ No alerts — all staff are active</div>
             ) : (
               <div className="space-y-2">
                 {alertsData.noMovement.alerts.map(a => (
@@ -222,7 +222,7 @@ export default function ReportsPage() {
                       <div className="text-slate-400 text-xs">
                         {a.last_ping
                           ? `Last ping: ${new Date(a.last_ping).toLocaleTimeString('en-IN')} (${a.minutes_since_ping} min ago)`
-                          : 'Koi ping nahi mili'}
+                          : 'No ping received'}
                       </div>
                     </div>
                     <span className="text-yellow-400 text-sm font-bold">⚠️</span>
@@ -241,7 +241,7 @@ export default function ReportsPage() {
             {!alertsData ? (
               <div className="text-slate-400 text-sm">Loading...</div>
             ) : alertsData.fakeGps.suspicious_visits.length === 0 ? (
-              <div className="text-green-400 text-sm">✅ Koi suspicious visit nahi mili</div>
+              <div className="text-green-400 text-sm">✅ No suspicious visits found</div>
             ) : (
               <div className="space-y-2">
                 {alertsData.fakeGps.suspicious_visits.map(v => (

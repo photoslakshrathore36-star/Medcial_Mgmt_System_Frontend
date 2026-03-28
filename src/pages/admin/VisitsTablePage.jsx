@@ -59,7 +59,7 @@ export default function VisitsTablePage() {
       const a    = document.createElement('a');
       a.href = url; a.download = `visits_${filters.date_from}_to_${filters.date_to}.csv`;
       a.click(); URL.revokeObjectURL(url);
-      toast.success('Export ho gaya ✅');
+      toast.success('Exported successfully ✅');
     } catch { toast.error('Export failed'); }
   };
 
@@ -156,7 +156,7 @@ export default function VisitsTablePage() {
                 </thead>
                 <tbody>
                   {visits.length===0
-                    ? <tr><td colSpan={11} className="text-slate-400 text-center py-8">Koi visits nahi</td></tr>
+                    ? <tr><td colSpan={11} className="text-slate-400 text-center py-8">No visits found</td></tr>
                     : visits.map(v=>(
                         <tr key={v.id} onClick={()=>setSelectedVisit(v)}
                           className="border-b border-slate-700/50 hover:bg-slate-700/30 cursor-pointer transition">

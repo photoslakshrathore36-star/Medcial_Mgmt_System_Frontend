@@ -21,7 +21,7 @@ export default function AreasPage() {
   const openEdit = (a) => { setEditing(a); setForm({ name: a.name, city: a.city || '', state: a.state || '', description: a.description || '' }); setShowModal(true); };
 
   const handleSubmit = async () => {
-    if (!form.name.trim() || !form.city.trim()) return toast.error('Name aur City required hain');
+    if (!form.name.trim() || !form.city.trim()) return toast.error('Name and City are required');
     try {
       if (editing) { await api.put(`/areas/${editing.id}`, { ...form, is_active: 1 }); toast.success('Updated!'); }
       else { await api.post('/areas', form); toast.success('Area added!'); }
@@ -30,7 +30,7 @@ export default function AreasPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Area delete karna hai?')) return;
+    if (!window.confirm('Delete this area?')) return;
     await api.delete(`/areas/${id}`);
     toast.success('Deleted'); load();
   };

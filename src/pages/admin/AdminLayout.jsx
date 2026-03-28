@@ -63,7 +63,7 @@ export default function AdminLayout() {
           <div className="text-center">
             <div className="text-4xl mb-3">🔒</div>
             <div className="text-red-400 font-semibold text-sm">License Inactive</div>
-            <div className="text-slate-500 text-xs mt-1">Super admin se contact karo</div>
+            <div className="text-slate-500 text-xs mt-1">Contact your super admin</div>
           </div>
         </div>
       ) : (
@@ -141,7 +141,7 @@ export default function AdminLayout() {
                 <div className="text-center">
                   <div className="text-6xl mb-4">🔒</div>
                   <div className="text-red-400 text-xl font-semibold mb-2">License Inactive / Expired</div>
-                  <div className="text-slate-400">Apne super admin se contact karein license activate karne ke liye.</div>
+                  <div className="text-slate-400">Contact your super admin to activate your license.</div>
                 </div>
               </div>
             : <Outlet />

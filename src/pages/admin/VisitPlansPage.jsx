@@ -54,7 +54,7 @@ export default function VisitPlansPage() {
   };
 
   const handleSubmit = async () => {
-    if (!form.worker_id || !form.doctor_id || !form.planned_date) return toast.error('Worker, Doctor aur Date required hain');
+    if (!form.worker_id || !form.doctor_id || !form.planned_date) return toast.error('Worker, Doctor and Date are required');
     try {
       if (editing) {
         await api.put(`/visit-plans/${editing.id}`, form);
@@ -68,7 +68,7 @@ export default function VisitPlansPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Plan delete karna hai?')) return;
+    if (!window.confirm('Delete this plan?')) return;
     await api.delete(`/visit-plans/${id}`);
     toast.success('Deleted'); load();
   };
@@ -123,7 +123,7 @@ export default function VisitPlansPage() {
         <div className="flex items-center justify-center h-48"><div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" /></div>
       ) : (
         <div className="space-y-3">
-          {plans.length === 0 && <div className="text-slate-400 text-center py-12">Koi visit plan nahi mila</div>}
+          {plans.length === 0 && <div className="text-slate-400 text-center py-12">No visit plans found</div>}
           {plans.map(p => (
             <div key={p.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -228,7 +228,7 @@ export default function VisitPlansPage() {
                   ))}
                 </div>
                 <textarea rows={2} value={form.sample_products} onChange={e => setForm(p => ({ ...p, sample_products: e.target.value }))}
-                  placeholder="Ya manually type karo..."
+                  placeholder="Or type manually..."
                   className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500 resize-none"
                 />
               </div>

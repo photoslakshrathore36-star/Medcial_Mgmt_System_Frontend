@@ -239,7 +239,7 @@ export default function FieldTrackingPage() {
             {/* Sessions */}
             <div className="space-y-2 max-h-[calc(100vh-350px)] overflow-y-auto">
               {loading && <div className="text-center py-8"><div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" /></div>}
-              {!loading && sessions.length === 0 && <div className="text-slate-400 text-sm text-center py-8">Koi session nahi mila</div>}
+              {!loading && sessions.length === 0 && <div className="text-slate-400 text-sm text-center py-8">No sessions found</div>}
               {sessions.map(s => (
                 <div key={s.id}
                   onClick={() => loadSessionDetail(s)}
@@ -268,7 +268,7 @@ export default function FieldTrackingPage() {
           <div className="flex-1 min-w-0">
             {/* Map */}
             <div ref={mapRef} className="w-full rounded-xl overflow-hidden border border-slate-700" style={{ height: '400px', background: '#1e293b' }}>
-              {!mapReady && <div className="flex items-center justify-center h-full text-slate-400 text-sm">Map load ho raha hai...</div>}
+              {!mapReady && <div className="flex items-center justify-center h-full text-slate-400 text-sm">Loading map...</div>}
             </div>
 
             {/* Session Detail */}
@@ -291,7 +291,7 @@ export default function FieldTrackingPage() {
                 {/* Visits Timeline */}
                 <h4 className="text-slate-300 text-sm font-semibold mb-3">Visit Timeline</h4>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {sessionDetail.visits?.length === 0 && <p className="text-slate-500 text-sm">Koi visit nahi</p>}
+                  {sessionDetail.visits?.length === 0 && <p className="text-slate-500 text-sm">No visits</p>}
                   {sessionDetail.visits?.map((v, i) => (
                     <div key={v.id} className="flex gap-3 items-start">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
@@ -385,10 +385,10 @@ function LiveTrackingTab({ workers, mapReady }) {
         <span className="text-slate-500 text-xs">(auto-refresh: 30s)</span>
       </div>
       <div ref={mapRef} className="w-full rounded-xl overflow-hidden border border-slate-700 mb-4" style={{ height: '500px', background: '#1e293b' }}>
-        {!mapReady && <div className="flex items-center justify-center h-full text-slate-400">Map load ho raha hai...</div>}
+        {!mapReady && <div className="flex items-center justify-center h-full text-slate-400">Loading map...</div>}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {liveData.length === 0 && <p className="text-slate-400 text-sm col-span-3 text-center py-4">Abhi koi field worker active nahi hai</p>}
+        {liveData.length === 0 && <p className="text-slate-400 text-sm col-span-3 text-center py-4">No field workers are active right now</p>}
         {liveData.map(w => (
           <div key={w.worker_id} className="bg-slate-800 border border-slate-700 rounded-xl p-3">
             <div className="flex items-center gap-2 mb-1">

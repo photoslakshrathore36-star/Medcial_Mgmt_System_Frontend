@@ -43,15 +43,15 @@ export default function WorkersPage() {
   const toggleArr = (arr, val) => arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val];
 
   const handleSubmit = async () => {
-    if (!form.name.trim() || (!editing && !form.username.trim())) return toast.error('Name aur Username required hain');
+    if (!form.name.trim() || (!editing && !form.username.trim())) return toast.error('Name and Username are required');
     try {
       if (editing) {
         await api.put(`/workers/${editing.id}`, { ...form });
         toast.success('Worker updated!');
       } else {
-        if (!form.password.trim()) return toast.error('Password required hai');
+        if (!form.password.trim()) return toast.error('Password is required');
         await api.post('/workers', form);
-        toast.success('Worker add ho gaya!');
+        toast.success('Worker added successfully!');
       }
       setShowModal(false); load();
     } catch (err) { toast.error(err.response?.data?.message || 'Error'); }
@@ -60,6 +60,15 @@ export default function WorkersPage() {
   const handleToggleActive = async (w) => {
     await api.put(`/workers/${w.id}`, { ...w, is_active: w.is_active ? 0 : 1 });
     load();
+  };
+
+  const handleDelete = async (w) => {
+    if (!window.confirm(`Delete "${w.name}" permanently? This cannot be undone.`)) return;
+    try {
+      await api.delete(`/workers/${w.id}`);
+      toast.success('Worker deleted');
+      load();
+    } catch (err) { toast.error(err.response?.data?.message || 'Delete failed'); }
   };
 
   const ROLE_LABEL = { worker: '🏭 Production', field_worker: '🏃 Field', admin: '⚙️ Admin' };
@@ -95,9 +104,10 @@ export default function WorkersPage() {
                 </div>
                 <div className="flex gap-1">
                   <button onClick={() => openEdit(w)} className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-slate-700 rounded-lg text-sm transition">✏️</button>
-                  <button onClick={() => handleToggleActive(w)} className={`p-1.5 hover:bg-slate-700 rounded-lg text-sm transition ${w.is_active ? 'text-slate-400 hover:text-red-400' : 'text-green-400'}`}>
+                  <button onClick={() => handleToggleActive(w)} className={`p-1.5 hover:bg-slate-700 rounded-lg text-sm transition ${w.is_active ? 'text-slate-400 hover:text-yellow-400' : 'text-green-400'}`}>
                     {w.is_active ? '🚫' : '✅'}
                   </button>
+                  <button onClick={() => handleDelete(w)} className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-700 rounded-lg text-sm transition">🗑️</button>
                 </div>
               </div>
               <h3 className="text-white font-semibold">{w.name}</h3>

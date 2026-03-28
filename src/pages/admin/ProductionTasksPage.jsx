@@ -50,7 +50,7 @@ export default function ProductionTasksPage() {
       </div>
       {loading ? <div className="flex justify-center py-12"><div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" /></div> : (
         <div className="space-y-2">
-          {tasks.length === 0 && <div className="text-slate-400 text-center py-12">Koi task nahi mila</div>}
+          {tasks.length === 0 && <div className="text-slate-400 text-center py-12">No tasks found</div>}
           {tasks.map(t => (
             <div key={t.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">

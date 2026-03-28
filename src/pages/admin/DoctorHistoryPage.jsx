@@ -35,7 +35,7 @@ export default function DoctorHistoryPage() {
   };
 
   if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"/></div>;
-  if (!data) return <div className="text-slate-400 text-center py-20">Data nahi mila</div>;
+  if (!data) return <div className="text-slate-400 text-center py-20">No data found</div>;
 
   const { doctor, visits, stats } = data;
 
@@ -104,7 +104,7 @@ export default function DoctorHistoryPage() {
       {/* Visit History */}
       <h2 className="text-white font-semibold mb-3">Visit History ({visits.length})</h2>
       {visits.length===0
-        ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-400">Koi visits nahi</div>
+        ? <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-400">No visits found</div>
         : <div className="space-y-3">
             {visits.map(v=>(
               <div key={v.id} className="bg-slate-800 border border-slate-700 rounded-xl p-4">
