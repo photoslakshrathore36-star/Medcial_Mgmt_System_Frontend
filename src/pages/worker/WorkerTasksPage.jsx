@@ -41,7 +41,7 @@ export default function WorkerTasksPage() {
   const handleClockIn = async (taskId) => {
     try {
       await api.post(`/tasks/${taskId}/clock-in`);
-      toast.success('Clocked in! Let's get to work 💪');
+      toast.success("Clocked in! Let's get to work 💪");
       loadTasks();
     } catch (err) { toast.error(err.response?.data?.message || 'Error'); }
   };
