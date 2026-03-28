@@ -91,7 +91,7 @@ export default function OrganizationsPage() {
     if (!window.confirm(`Please confirm again — "${org.name}" delete?`)) return;
     try {
       await api.delete(`/super/organizations/${org.id}`);
-      toast.success('Organization delete ho gayi ✅');
+      toast.success('Organization deleted successfully ✅');
       loadOrgs();
     } catch (err) { toast.error(err.response?.data?.message || 'Delete failed'); }
   };
