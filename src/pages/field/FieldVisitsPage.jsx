@@ -118,7 +118,7 @@ export default function FieldVisitsPage() {
       try {
         const r = await api.post('/field/upload-photo', { image_base64: base64 });
         setForm(p => ({ ...p, photo_url: r.data.url }));
-        toast.success('Photo upload ho gayi ✅');
+        toast.success('Photo uploaded successfully ✅');
       } catch {
         // Clear preview if upload failed — force retake
         setForm(p => ({ ...p, photo_preview: '', photo_url: '' }));
@@ -244,7 +244,7 @@ export default function FieldVisitsPage() {
           <button onClick={()=>handleArrived()} disabled={gettingLocation||!hasActiveSession}
             className="w-full bg-slate-800 border border-slate-700 hover:border-slate-500 disabled:opacity-40 text-white py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition mt-2">
             {gettingLocation?<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"/>:'➕'}
-            Naya / Unplanned Visit Record Karo
+            New / Unplanned Visit
           </button>
           {!hasActiveSession && <p className="text-yellow-400 text-xs text-center mt-2">⚠️ Start a session to record visits</p>}
         </div>
@@ -304,7 +304,7 @@ export default function FieldVisitsPage() {
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60">
           <div className="bg-slate-800 border border-slate-700 rounded-t-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
             <div className="sticky top-0 bg-slate-800 p-4 border-b border-slate-700 flex items-center justify-between">
-              <h2 className="text-white font-semibold">Visit Record Karo</h2>
+              <h2 className="text-white font-semibold">Record Visit</h2>
               <button onClick={()=>setShowModal(false)} className="text-slate-400 hover:text-white text-xl">✕</button>
             </div>
             <div className="p-4 space-y-4">
@@ -323,7 +323,7 @@ export default function FieldVisitsPage() {
 
               {plans.length>0 && (
                 <div>
-                  <label className="text-slate-300 text-sm font-medium block mb-1.5">Plan se Link Karo (optional)</label>
+                  <label className="text-slate-300 text-sm font-medium block mb-1.5">Link to Plan (optional)</label>
                   <select value={form.visit_plan_id} onChange={e=>handlePlanSelect(e.target.value)}
                     className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
                     <option value="">-- Unplanned Visit --</option>
@@ -336,7 +336,7 @@ export default function FieldVisitsPage() {
                 <label className="text-slate-300 text-sm font-medium block mb-1.5">{form.visit_type==='chemist'?'Chemist':'Doctor'} *</label>
                 <select value={form.doctor_id} onChange={e=>setForm(p=>({...p,doctor_id:e.target.value}))}
                   className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
-                  <option value="">-- Select Karo --</option>
+                  <option value="">-- Select --</option>
                   {doctors.map(d=><option key={d.id} value={d.id}>{d.name} — {d.clinic_name||'No clinic'}</option>)}
                 </select>
               </div>
@@ -362,7 +362,7 @@ export default function FieldVisitsPage() {
                   : <button type="button" onClick={handleTakePhoto}
                       className="w-full bg-slate-700 border-2 border-dashed border-slate-500 hover:border-blue-500 text-slate-300 py-8 rounded-xl text-sm flex flex-col items-center gap-2 transition">
                       <span className="text-3xl">📷</span>
-                      <span>Photo Lo (Camera Khulega)</span>
+                      <span>Take Photo (Camera will open)</span>
                     </button>
                 }
               </div>
@@ -371,7 +371,7 @@ export default function FieldVisitsPage() {
                 <label className="text-slate-300 text-sm font-medium block mb-1.5">Product</label>
                 <select value={form.product_id} onChange={e=>setForm(p=>({...p,product_id:e.target.value}))}
                   className="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500">
-                  <option value="">-- Product Select Karo --</option>
+                  <option value="">-- Select Product --</option>
                   {products.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
                 <input type="text" value={form.samples_given} onChange={e=>setForm(p=>({...p,samples_given:e.target.value}))}
