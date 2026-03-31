@@ -21,6 +21,7 @@ import VisitPlansPage from './pages/admin/VisitPlansPage';
 import FieldTrackingPage from './pages/admin/FieldTrackingPage';
 import ProductionTasksPage from './pages/admin/ProductionTasksPage';
 import ReportsPage from './pages/admin/ReportsPage';
+import SampleInventoryPage from './pages/admin/SampleInventoryPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import VisitsTablePage from './pages/admin/VisitsTablePage';
 import DoctorHistoryPage from './pages/admin/DoctorHistoryPage';
@@ -35,6 +36,7 @@ import FieldLayout from './pages/field/FieldLayout';
 import FieldDashboard from './pages/field/FieldDashboard';
 import FieldSessionPage from './pages/field/FieldSessionPage';
 import FieldVisitsPage from './pages/field/FieldVisitsPage';
+import RoutePlannerPage from './pages/field/RoutePlannerPage';
 
 // Login
 import LoginPage from './pages/LoginPage';
@@ -89,6 +91,7 @@ function AppRoutes() {
         <Route path="field-tracking" element={<FieldTrackingPage />} />
         <Route path="visits" element={<VisitsTablePage />} />
         <Route path="reports" element={<ReportsPage />} />
+        <Route path="inventory" element={<SampleInventoryPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
 
@@ -103,6 +106,7 @@ function AppRoutes() {
         <Route index element={<FieldDashboard />} />
         <Route path="session" element={<FieldSessionPage />} />
         <Route path="visits" element={<FieldVisitsPage />} />
+        <Route path="route" element={<RoutePlannerPage />} />
       </Route>
 
       <Route path="/" element={<Navigate to={defaultRedirect()} />} />
