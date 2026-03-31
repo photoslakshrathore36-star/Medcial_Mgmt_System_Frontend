@@ -15,6 +15,7 @@ const ALL_NAV = [
   { path: '/admin/visit-plans',   label: 'Visit Plans',      icon: '📋',             key: 'visit-plans' },
   { path: '/admin/field-tracking',label: 'Live Tracking',    icon: '📍',             key: 'field-tracking' },
   { path: '/admin/visits',        label: 'Visits Table',     icon: '🗒️',             key: 'visits' },
+  { path: '/admin/inventory',    label: 'Sample Inventory', icon: '💊',             key: 'inventory' },
   { divider: true, label: 'More' },
   { path: '/admin/reports',       label: 'Reports & Alerts', icon: '📈',             key: 'reports' },
   { path: '/admin/settings',      label: 'Settings',         icon: '⚙️',             key: 'settings' },
