@@ -22,7 +22,15 @@ import FieldTrackingPage from './pages/admin/FieldTrackingPage';
 import ProductionTasksPage from './pages/admin/ProductionTasksPage';
 import ReportsPage from './pages/admin/ReportsPage';
 import SampleInventoryPage from './pages/admin/SampleInventoryPage';
+import SalesTargetsPage from './pages/admin/SalesTargetsPage';
+import LeaderboardPage from './pages/admin/LeaderboardPage';
+import ChemistsPage from './pages/admin/ChemistsPage';
+import DoctorEngagementPage from './pages/admin/DoctorEngagementPage';
+import NotificationsPage from './pages/admin/NotificationsPage';
 import SettingsPage from './pages/admin/SettingsPage';
+import AIVisitSummaryPage from './pages/admin/AIVisitSummaryPage';
+import AppointmentsPage from './pages/admin/AppointmentsPage';
+import AuditPage from './pages/admin/AuditPage';
 import VisitsTablePage from './pages/admin/VisitsTablePage';
 import DoctorHistoryPage from './pages/admin/DoctorHistoryPage';
 
@@ -37,6 +45,8 @@ import FieldDashboard from './pages/field/FieldDashboard';
 import FieldSessionPage from './pages/field/FieldSessionPage';
 import FieldVisitsPage from './pages/field/FieldVisitsPage';
 import RoutePlannerPage from './pages/field/RoutePlannerPage';
+import CallLogsPage from './pages/field/CallLogsPage';
+import RemindersPage from './pages/field/RemindersPage';
 
 // Login
 import LoginPage from './pages/LoginPage';
@@ -92,6 +102,14 @@ function AppRoutes() {
         <Route path="visits" element={<VisitsTablePage />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="inventory" element={<SampleInventoryPage />} />
+        <Route path="targets" element={<SalesTargetsPage />} />
+        <Route path="leaderboard" element={<LeaderboardPage />} />
+        <Route path="chemists" element={<ChemistsPage />} />
+        <Route path="engagement" element={<DoctorEngagementPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="ai-summary" element={<AIVisitSummaryPage />} />
+        <Route path="appointments" element={<AppointmentsPage />} />
+        <Route path="audit" element={<AuditPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
 
@@ -107,6 +125,8 @@ function AppRoutes() {
         <Route path="session" element={<FieldSessionPage />} />
         <Route path="visits" element={<FieldVisitsPage />} />
         <Route path="route" element={<RoutePlannerPage />} />
+        <Route path="call-logs" element={<CallLogsPage />} />
+        <Route path="reminders" element={<RemindersPage />} />
       </Route>
 
       <Route path="/" element={<Navigate to={defaultRedirect()} />} />

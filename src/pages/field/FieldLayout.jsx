@@ -56,6 +56,8 @@ export default function FieldLayout() {
     { path: '/field/session', label: 'Session', icon: hasActiveSession ? '🟢' : '📍' },
     { path: '/field/visits', label: 'Visits', icon: '🤝' },
     { path: '/field/route', label: 'Route', icon: '🗺️' },
+    { path: '/field/call-logs', label: 'Calls', icon: '📞' },
+    { path: '/field/reminders', label: 'Reminders', icon: '🔔' },
   ];
 
   return (
