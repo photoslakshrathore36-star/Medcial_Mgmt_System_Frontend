@@ -4,19 +4,30 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
 const ALL_MENUS = [
-  { key: 'dashboard',      label: 'Dashboard',        icon: '📊' },
-  { key: 'orders',         label: 'Production Orders', icon: '📦' },
-  { key: 'tasks',          label: 'Tasks',             icon: '✅' },
-  { key: 'departments',    label: 'Departments',       icon: '🏭' },
-  { key: 'workers',        label: 'Workers',           icon: '👷' },
-  { key: 'doctors',        label: 'Doctors',           icon: '👨‍⚕️' },
-  { key: 'areas',          label: 'Areas',             icon: '🗺️' },
-  { key: 'visit-plans',    label: 'Visit Plans',       icon: '📋' },
-  { key: 'field-tracking', label: 'Live Tracking',     icon: '📍' },
-  { key: 'visits',         label: 'Visits Table',      icon: '🗒️' },
-  { key: 'reports',        label: 'Reports & Alerts',  icon: '📈' },
-  { key: 'settings',       label: 'Settings',          icon: '⚙️' },
+  { key: 'dashboard',      label: 'Dashboard',            icon: '📊', group: 'Production' },
+  { key: 'orders',         label: 'Production Orders',    icon: '📦', group: 'Production' },
+  { key: 'tasks',          label: 'Tasks',                icon: '✅', group: 'Production' },
+  { key: 'departments',    label: 'Departments',          icon: '🏭', group: 'Production' },
+  { key: 'workers',        label: 'Workers',              icon: '👷', group: 'Production' },
+  { key: 'doctors',        label: 'Doctors',              icon: '👨‍⚕️', group: 'Field Operations' },
+  { key: 'chemists',       label: 'Chemists & Stockists', icon: '🏪', group: 'Field Operations' },
+  { key: 'areas',          label: 'Areas',                icon: '🗺️', group: 'Field Operations' },
+  { key: 'visit-plans',    label: 'Visit Plans',          icon: '📋', group: 'Field Operations' },
+  { key: 'field-tracking', label: 'Live Tracking',        icon: '📍', group: 'Field Operations' },
+  { key: 'visits',         label: 'Visits Table',         icon: '🗒️', group: 'Field Operations' },
+  { key: 'engagement',     label: 'Doctor Engagement',    icon: '📈', group: 'Field Operations' },
+  { key: 'appointments',   label: 'Appointments',         icon: '📅', group: 'Field Operations' },
+  { key: 'targets',        label: 'Sales Targets',        icon: '🎯', group: 'Performance' },
+  { key: 'leaderboard',    label: 'Leaderboard',          icon: '🏆', group: 'Performance' },
+  { key: 'inventory',      label: 'Sample Inventory',     icon: '💊', group: 'Performance' },
+  { key: 'notifications',  label: 'Notifications/SMS',    icon: '📱', group: 'Tools' },
+  { key: 'ai-summary',     label: 'AI Visit Summary',     icon: '🤖', group: 'Tools' },
+  { key: 'reports',        label: 'Reports & Alerts',     icon: '📊', group: 'Tools' },
+  { key: 'audit',          label: 'HIPAA & Audit',        icon: '🔐', group: 'Tools' },
+  { key: 'settings',       label: 'Settings',             icon: '⚙️', group: 'Tools' },
 ];
+
+const MENU_GROUPS = ['Production', 'Field Operations', 'Performance', 'Tools'];
 
 const emptyForm = {
   name: '', slug: '', owner_name: '', email: '', phone: '', address: '',
@@ -285,19 +296,24 @@ export default function OrganizationsPage() {
                           className="text-xs text-slate-400 hover:text-slate-300">None</button>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {ALL_MENUS.map(m => (
-                        <button key={m.key} type="button" onClick={() => toggleMenu(m.key)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm border transition text-left ${
-                            form.enabled_menus.includes(m.key)
-                              ? 'bg-purple-900/40 border-purple-600/50 text-purple-300'
-                              : 'bg-slate-700 border-slate-600 text-slate-400'
-                          }`}>
-                          <span>{m.icon}</span>
-                          <span className="text-xs">{m.label}</span>
-                        </button>
-                      ))}
-                    </div>
+                    {MENU_GROUPS.map(group => (
+                      <div key={group} className="mb-3">
+                        <div className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5 px-1">{group}</div>
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {ALL_MENUS.filter(m => m.group === group).map(m => (
+                            <button key={m.key} type="button" onClick={() => toggleMenu(m.key)}
+                              className={`flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs border transition text-left ${
+                                form.enabled_menus.includes(m.key)
+                                  ? 'bg-purple-900/40 border-purple-600/50 text-purple-300'
+                                  : 'bg-slate-700 border-slate-600 text-slate-400'
+                              }`}>
+                              <span style={{fontSize:13}}>{m.icon}</span>
+                              <span>{m.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </>
               )}
@@ -328,23 +344,41 @@ export default function OrganizationsPage() {
                 <button onClick={() => { const m={}; ALL_MENUS.forEach(x=>m[x.key]=false); setPermissions(m); }}
                   className="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-lg transition">All Off</button>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {ALL_MENUS.map(m => (
-                  <button key={m.key} type="button"
-                    onClick={() => setPermissions(p => ({ ...p, [m.key]: !p[m.key] }))}
-                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm border transition text-left ${
-                      permissions[m.key]
-                        ? 'bg-green-900/40 border-green-600/50 text-green-300'
-                        : 'bg-slate-700 border-slate-600 text-slate-500'
-                    }`}>
-                    <span className={`w-4 h-4 rounded flex items-center justify-center text-xs flex-shrink-0 ${permissions[m.key] ? 'bg-green-600' : 'bg-slate-600'}`}>
-                      {permissions[m.key] ? '✓' : ''}
-                    </span>
-                    <span>{m.icon}</span>
-                    <span className="text-xs">{m.label}</span>
-                  </button>
-                ))}
-              </div>
+              {MENU_GROUPS.map(group => (
+                <div key={group} className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{group}</span>
+                    <button type="button"
+                      onClick={() => {
+                        const keys = ALL_MENUS.filter(m => m.group === group).map(m => m.key);
+                        const allOn = keys.every(k => permissions[k]);
+                        const upd = {...permissions};
+                        keys.forEach(k => upd[k] = !allOn);
+                        setPermissions(upd);
+                      }}
+                      className="text-xs text-slate-500 hover:text-slate-300 transition">
+                      toggle all
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {ALL_MENUS.filter(m => m.group === group).map(m => (
+                      <button key={m.key} type="button"
+                        onClick={() => setPermissions(p => ({ ...p, [m.key]: !p[m.key] }))}
+                        className={`flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs border transition text-left ${
+                          permissions[m.key]
+                            ? 'bg-green-900/40 border-green-600/50 text-green-300'
+                            : 'bg-slate-700 border-slate-600 text-slate-500'
+                        }`}>
+                        <span className={`w-3.5 h-3.5 rounded flex items-center justify-center text-xs flex-shrink-0 ${permissions[m.key] ? 'bg-green-600' : 'bg-slate-600'}`}>
+                          {permissions[m.key] ? '✓' : ''}
+                        </span>
+                        <span style={{fontSize:12}}>{m.icon}</span>
+                        <span>{m.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="p-4 border-t border-slate-700 flex gap-3">
               <button onClick={() => setShowPermsModal(false)} className="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm transition">Cancel</button>
